@@ -52,3 +52,19 @@ def generate_sudoku():
         board[row, col] = num
     solve_sudoku(board)
     return board
+
+def remove_numbers(board, level):
+    if level == 'easy':
+        squares_to_remove = 40
+    elif level == 'medium':
+        squares_to_remove = 50
+    else:
+        squares_to_remove = 60
+
+    while squares_to_remove > 0:
+        row = random.randint(0, 8)
+        col = random.randint(0, 8)
+        if board[row, col] != 0:
+            board[row, col] = 0
+            squares_to_remove -= 1
+    return board
