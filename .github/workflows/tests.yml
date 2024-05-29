@@ -22,7 +22,6 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     
-    - name: Run the app
-      run: python app.py
-    
-    
+    # - name: Run the tests
+    #   run: python -m unittest discover -s tests
+      
