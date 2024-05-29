@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Custom Sudoku</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            position: relative;
+        }
+        input {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: none;
+            outline: none;
+        }
+        .bold-border-right {
+            border-right: 2px solid black;
+        }
+        .bold-border-bottom {
+            border-bottom: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Create your custom Sudoku</h1>
+        <form method="post" action="/custom">
+            <table>
+                {% for i in range(9) %}
+                <tr>
+                    {% for j in range(9) %}
+                    <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">
+                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}">
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="text-center mt-4">
+                <button type="submit" name="solve" class="btn btn-success">Resolve</button>
+            </div>
+        </form>
+        {% if solved_board %}
+        <h2 class="text-center my-4">Solved Sudoku:</h2>
+        <table>
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">{{ solved_board[i][j] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        {% if error %}
+        <h2 class="text-center text-danger my-4">{{ error }}</h2>
+        {% endif %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
