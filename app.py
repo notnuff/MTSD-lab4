@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+import numpy as np
+import random
 
 app = Flask(__name__)
 
@@ -38,3 +40,15 @@ def solve_sudoku(board):
                 return True
             board[row, col] = 0
     return False
+
+def generate_sudoku():
+    board = np.zeros((9, 9), dtype=int)
+    for _ in range(17): 
+        num = random.randint(1, 9)
+        row, col = random.randint(0, 8), random.randint(0, 8)
+        while board[row, col] != 0 or not is_valid(board, row, col, num):
+            row, col = random.randint(0, 8), random.randint(0, 8)
+            num = random.randint(1, 9)
+        board[row, col] = num
+    solve_sudoku(board)
+    return board
