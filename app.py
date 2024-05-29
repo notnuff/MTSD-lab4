@@ -69,5 +69,14 @@ def remove_numbers(board, level):
             squares_to_remove -= 1
     return board
 
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        difficulty = request.form["difficulty"]
+        sudoku_board = generate_sudoku()
+        sudoku_board = remove_numbers(sudoku_board, difficulty)
+        return render_template("index.html", board=sudoku_board.tolist(), solved_board=None)
+    return render_template("index.html", board=None, solved_board=None)
+
 if __name__ == "__main__":
     app.run(debug=True)
