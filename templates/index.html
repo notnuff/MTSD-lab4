@@ -76,6 +76,22 @@
                 <button type="submit" class="btn btn-success">Solve</button>
             </div>
         </form>
+        {% endif %}
+        {% if solved_board %}
+        <h2 class="text-center my-4">Solved Sudoku:</h2>
+        <table>
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">{{ solved_board[i][j] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        {% if error %}
+        <h2 class="text-center text-danger my-4">{{ error }}</h2>
+        {% endif %}
     </div>
 </body>
 </html>
