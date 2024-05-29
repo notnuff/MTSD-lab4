@@ -38,6 +38,19 @@
     </style>
 </head>
 <body>
-   
+    <div class="container">
+        <h1 class="text-center my-4">Sudoku</h1>
+        <form method="post" action="/">
+            <div class="form-group text-center">
+                <label for="difficulty">Choose difficulty:</label>
+                <select id="difficulty" name="difficulty" class="form-control d-inline-block w-auto">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Generate</button>
+            </div>
+        </form>
+      </div>
 </body>
 </html>
