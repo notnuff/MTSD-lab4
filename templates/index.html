@@ -51,6 +51,31 @@
                 <button type="submit" class="btn btn-primary">Generate</button>
             </div>
         </form>
-      </div>
+        <div class="text-center mb-4">
+            <a href="/custom" class="btn btn-secondary">Create Custom Sudoku</a>
+        </div>
+        {% if board %}
+        <form method="post" action="/solve">
+            <table>
+                {% for i in range(9) %}
+                <tr>
+                    {% for j in range(9) %}
+                    <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">
+                        {% if board[i][j] != 0 %}
+                        {{ board[i][j] }}
+                        <input type="hidden" name="cell-{{ i }}-{{ j }}" value="{{ board[i][j] }}">
+                        {% else %}
+                        <input type="text" name="cell-{{ i }}-{{ j }}" value="">
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success">Solve</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
