@@ -38,6 +38,39 @@
     </style>
 </head>
 <body>
-   
+    <div class="container">
+        <h1 class="text-center my-4">Create your custom Sudoku</h1>
+        <form method="post" action="/custom">
+            <table>
+                {% for i in range(9) %}
+                <tr>
+                    {% for j in range(9) %}
+                    <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">
+                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}">
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="text-center mt-4">
+                <button type="submit" name="solve" class="btn btn-success">Resolve</button>
+            </div>
+        </form>
+        {% if solved_board %}
+        <h2 class="text-center my-4">Solved Sudoku:</h2>
+        <table>
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">{{ solved_board[i][j] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        {% if error %}
+        <h2 class="text-center text-danger my-4">{{ error }}</h2>
+        {% endif %}
+    </div>
 </body>
 </html>
