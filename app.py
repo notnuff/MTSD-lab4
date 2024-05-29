@@ -68,3 +68,6 @@ def remove_numbers(board, level):
             board[row, col] = 0
             squares_to_remove -= 1
     return board
+
+if __name__ == "__main__":
+    app.run(debug=True)
