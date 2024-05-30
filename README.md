@@ -1,5 +1,6 @@
 # Sudoku Web Application
 
+
 ## Description
 This Python web application allows users to generate and solve Sudoku puzzles. It is built using the Flask framework and supports generating puzzles of varying difficulties as well as solving custom puzzles inputted by users.
 
