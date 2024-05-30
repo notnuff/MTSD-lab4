@@ -11,7 +11,7 @@ class SudokuGenerationTestCase(unittest.TestCase):
     def test_remove_numbers(self):
         board = generate_sudoku()
         board_with_holes = remove_numbers(board.copy(), 'easy')
-        self.assertTrue(np.count_nonzero(board_with_holes == 0) >= 40)
+        self.assertTrue((board_with_holes == 0).sum() >= 40)
 
 if __name__ == '__main__':
     unittest.main()
