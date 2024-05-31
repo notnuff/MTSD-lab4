@@ -43,14 +43,18 @@ def solve_sudoku(board):
 
 def generate_sudoku():
     board = np.zeros((9, 9), dtype=int)
-    for _ in range(17): 
-        num = random.randint(1, 9)
+    
+    attempts = 0
+    while attempts < 17:
         row, col = random.randint(0, 8), random.randint(0, 8)
-        while board[row, col] != 0 or not is_valid(board, row, col, num):
-            row, col = random.randint(0, 8), random.randint(0, 8)
-            num = random.randint(1, 9)
-        board[row, col] = num
-    solve_sudoku(board)
+        num = random.randint(1, 9)
+        if board[row, col] == 0 and is_valid(board, row, col, num):
+            board[row, col] = num
+            attempts += 1
+    
+    if not solve_sudoku(board):
+        return generate_sudoku()
+    
     return board
 
 def remove_numbers(board, level):
