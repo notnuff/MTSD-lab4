@@ -61,12 +61,12 @@ def remove_numbers(board, level):
     else:
         squares_to_remove = 60
 
-    while squares_to_remove > 0:
-        row = random.randint(0, 8)
-        col = random.randint(0, 8)
-        if board[row, col] != 0:
-            board[row, col] = 0
-            squares_to_remove -= 1
+    all_cells = [(row, col) for row in range(9) for col in range(9)]
+    random.shuffle(all_cells)
+    for i in range(squares_to_remove):
+        row, col = all_cells[i]
+        board[row, col] = 0
+
     return board
 
 @app.route("/", methods=["GET", "POST"])
