@@ -5,6 +5,14 @@
     <title>Custom Sudoku</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
+        }
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
         table {
             border-collapse: collapse;
             margin: 20px auto;
@@ -28,6 +36,10 @@
             left: 0;
             border: none;
             outline: none;
+            transition: background-color 0.3s ease;
+        }
+        input:focus {
+            background-color: #e0f7fa;
         }
         .bold-border-right {
             border-right: 2px solid black;
@@ -35,7 +47,30 @@
         .bold-border-bottom {
             border-bottom: 2px solid black;
         }
+        .btn:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .tooltip-inner {
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1070;
+            display: block;
+            font-size: 0.875rem;
+        }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const darkMode = localStorage.getItem('dark-mode');
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -46,7 +81,7 @@
                 <tr>
                     {% for j in range(9) %}
                     <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">
-                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}">
+                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}" data-toggle="tooltip" title="Cell ({{ i }}, {{ j }})">
                     </td>
                     {% endfor %}
                 </tr>
@@ -54,8 +89,12 @@
             </table>
             <div class="text-center mt-4">
                 <button type="submit" name="solve" class="btn btn-success">Resolve</button>
+                <button type="button" id="toggleDarkMode" class="btn btn-secondary">Toggle Dark Mode</button>
             </div>
         </form>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary" data-toggle="tooltip" title="Return to main Sudoku page">Return to Index</a>
+        </div>
         {% if solved_board %}
         <h2 class="text-center my-4">Solved Sudoku:</h2>
         <table>
@@ -75,5 +114,21 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            const toggleDarkMode = document.getElementById('toggleDarkMode');
+            const body = document.body;
+
+            toggleDarkMode.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('dark-mode', 'enabled');
+                } else {
+                    localStorage.setItem('dark-mode', 'disabled');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
