@@ -64,12 +64,41 @@
             display: block;
             font-size: 0.875rem;
         }
+        .icon-animate {
+            transition: transform 0.5s ease;
+        }
+        .icon-animate.rotate {
+            transform: rotate(360deg);
+        }
+        .dark-mode-btn {
+            background-color: black;
+            color: white;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .light-mode-btn {
+            background-color: white;
+            color: black;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const darkMode = localStorage.getItem('dark-mode');
+            const toggleButton = document.getElementById('toggleDarkMode');
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
+            
             if (darkMode === 'enabled') {
                 document.body.classList.add('dark-mode');
+                toggleButton.classList.add('dark-mode-btn');
+                toggleButton.classList.remove('light-mode-btn');
+                iconMoon.style.display = 'none';
+                iconSun.style.display = 'inline';
+            } else {
+                toggleButton.classList.add('light-mode-btn');
+                toggleButton.classList.remove('dark-mode-btn');
+                iconSun.style.display = 'none';
+                iconMoon.style.display = 'inline';
             }
         });
     </script>
@@ -91,8 +120,9 @@
             </table>
             <div class="text-center mt-4">
                 <button type="submit" name="solve" class="btn btn-success">Resolve</button>
-                <button type="button" id="toggleDarkMode" class="btn btn-secondary">
-                    <i class="fas fa-moon"></i> 
+                <button type="button" id="toggleDarkMode" class="btn">
+                    <i id="icon-moon" class="fas fa-moon icon-animate"></i>
+                    <i id="icon-sun" class="fas fa-sun icon-animate"></i>
                     Toggle Dark Mode
                 </button>     
             </div>
@@ -124,14 +154,29 @@
             $('[data-toggle="tooltip"]').tooltip();
             const toggleDarkMode = document.getElementById('toggleDarkMode');
             const body = document.body;
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
 
             toggleDarkMode.addEventListener('click', () => {
                 body.classList.toggle('dark-mode');
-                if (body.classList.contains('dark-mode')) {
-                    localStorage.setItem('dark-mode', 'enabled');
-                } else {
-                    localStorage.setItem('dark-mode', 'disabled');
-                }
+                iconMoon.classList.toggle('rotate');
+                iconSun.classList.toggle('rotate');
+
+                setTimeout(() => {
+                    if (body.classList.contains('dark-mode')) {
+                        iconMoon.style.display = 'none';
+                        iconSun.style.display = 'inline';
+                        toggleDarkMode.classList.add('dark-mode-btn');
+                        toggleDarkMode.classList.remove('light-mode-btn');
+                        localStorage.setItem('dark-mode', 'enabled');
+                    } else {
+                        iconSun.style.display = 'none';
+                        iconMoon.style.display = 'inline';
+                        toggleDarkMode.classList.add('light-mode-btn');
+                        toggleDarkMode.classList.remove('dark-mode-btn');
+                        localStorage.setItem('dark-mode', 'disabled');
+                    }
+                }, 150);
             });
         });
     </script>
