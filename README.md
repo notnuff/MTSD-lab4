@@ -69,7 +69,6 @@ sudoku-web-app/
 ├── tests/
 │   ├── __init__.py
 │   ├── test_flask_routes.py
-│   ├── test_sudoku_generation.py
 │   └── test_sudoku_logic.py
 ├── app.py
 └── requirements.txt
@@ -81,6 +80,5 @@ sudoku-web-app/
   - **custom.html**: Template for creating and solving custom Sudoku puzzles.
 - **tests/**: Contains unit tests for the application.
   - **test_flask_routes.py**: Tests for Flask routes.
-  - **test_sudoku_generation.py**: Tests for Sudoku generation functions.
   - **test_sudoku_logic.py**: Tests for Sudoku solving logic.
 - **requirements.txt**: List of Python packages required for the project.
