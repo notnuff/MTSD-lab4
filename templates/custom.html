@@ -4,7 +4,17 @@
     <meta charset="utf-8">
     <title>Custom Sudoku</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
+        body {
+            background-color: #f0f0f0;
+            transition: background-color 0.5s ease;
+        }
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
         table {
             border-collapse: collapse;
             margin: 20px auto;
@@ -28,6 +38,10 @@
             left: 0;
             border: none;
             outline: none;
+            transition: background-color 0.3s ease;
+        }
+        input:focus {
+            background-color: #e0f7fa;
         }
         .bold-border-right {
             border-right: 2px solid black;
@@ -35,7 +49,59 @@
         .bold-border-bottom {
             border-bottom: 2px solid black;
         }
+        .btn:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .tooltip-inner {
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1070;
+            display: block;
+            font-size: 0.875rem;
+        }
+        .icon-animate {
+            transition: transform 0.5s ease;
+        }
+        .icon-animate.rotate {
+            transform: rotate(360deg);
+        }
+        .dark-mode-btn {
+            background-color: black;
+            color: white;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        .light-mode-btn {
+            background-color: white;
+            color: black;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const darkMode = localStorage.getItem('dark-mode');
+            const toggleButton = document.getElementById('toggleDarkMode');
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
+            
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+                toggleButton.classList.add('dark-mode-btn');
+                toggleButton.classList.remove('light-mode-btn');
+                iconMoon.style.display = 'none';
+                iconSun.style.display = 'inline';
+            } else {
+                toggleButton.classList.add('light-mode-btn');
+                toggleButton.classList.remove('dark-mode-btn');
+                iconSun.style.display = 'none';
+                iconMoon.style.display = 'inline';
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -46,7 +112,7 @@
                 <tr>
                     {% for j in range(9) %}
                     <td class="{% if j % 3 == 2 and j != 8 %} bold-border-right{% endif %}{% if i % 3 == 2 and i != 8 %} bold-border-bottom{% endif %}">
-                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}">
+                        <input type="text" name="cell-{{ i }}-{{ j }}" value="{% if board[i][j] != 0 %}{{ board[i][j] }}{% endif %}" data-toggle="tooltip" title="Cell ({{ i }}, {{ j }})">
                     </td>
                     {% endfor %}
                 </tr>
@@ -54,8 +120,16 @@
             </table>
             <div class="text-center mt-4">
                 <button type="submit" name="solve" class="btn btn-success">Resolve</button>
+                <button type="button" id="toggleDarkMode" class="btn">
+                    <i id="icon-moon" class="fas fa-moon icon-animate"></i>
+                    <i id="icon-sun" class="fas fa-sun icon-animate"></i>
+                    Toggle Dark Mode
+                </button>     
             </div>
         </form>
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary" data-toggle="tooltip" title="Return to main Sudoku page">Return to Index</a>
+        </div>
         {% if solved_board %}
         <h2 class="text-center my-4">Solved Sudoku:</h2>
         <table>
@@ -75,5 +149,36 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            const toggleDarkMode = document.getElementById('toggleDarkMode');
+            const body = document.body;
+            const iconMoon = document.getElementById('icon-moon');
+            const iconSun = document.getElementById('icon-sun');
+
+            toggleDarkMode.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                iconMoon.classList.toggle('rotate');
+                iconSun.classList.toggle('rotate');
+
+                setTimeout(() => {
+                    if (body.classList.contains('dark-mode')) {
+                        iconMoon.style.display = 'none';
+                        iconSun.style.display = 'inline';
+                        toggleDarkMode.classList.add('dark-mode-btn');
+                        toggleDarkMode.classList.remove('light-mode-btn');
+                        localStorage.setItem('dark-mode', 'enabled');
+                    } else {
+                        iconSun.style.display = 'none';
+                        iconMoon.style.display = 'inline';
+                        toggleDarkMode.classList.add('light-mode-btn');
+                        toggleDarkMode.classList.remove('dark-mode-btn');
+                        localStorage.setItem('dark-mode', 'disabled');
+                    }
+                }, 150);
+            });
+        });
+    </script>
 </body>
 </html>
