@@ -43,14 +43,18 @@ def solve_sudoku(board):
 
 def generate_sudoku():
     board = np.zeros((9, 9), dtype=int)
-    for _ in range(17): 
-        num = random.randint(1, 9)
+    
+    attempts = 0
+    while attempts < 17:
         row, col = random.randint(0, 8), random.randint(0, 8)
-        while board[row, col] != 0 or not is_valid(board, row, col, num):
-            row, col = random.randint(0, 8), random.randint(0, 8)
-            num = random.randint(1, 9)
-        board[row, col] = num
-    solve_sudoku(board)
+        num = random.randint(1, 9)
+        if board[row, col] == 0 and is_valid(board, row, col, num):
+            board[row, col] = num
+            attempts += 1
+    
+    if not solve_sudoku(board):
+        return generate_sudoku()
+    
     return board
 
 def remove_numbers(board, level):
@@ -61,12 +65,12 @@ def remove_numbers(board, level):
     else:
         squares_to_remove = 60
 
-    while squares_to_remove > 0:
-        row = random.randint(0, 8)
-        col = random.randint(0, 8)
-        if board[row, col] != 0:
-            board[row, col] = 0
-            squares_to_remove -= 1
+    all_cells = [(row, col) for row in range(9) for col in range(9)]
+    random.shuffle(all_cells)
+    for i in range(squares_to_remove):
+        row, col = all_cells[i]
+        board[row, col] = 0
+
     return board
 
 @app.route("/", methods=["GET", "POST"])
